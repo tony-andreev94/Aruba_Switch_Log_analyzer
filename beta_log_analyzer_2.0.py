@@ -1,31 +1,28 @@
+# TODO: Add a general description of the program?
 import os
 import re
 import time
 
 start_time = time.time()
-
-# [24;1H[2K[24;1H[1;24r[24;1H
-
+# Setting up a variable that gets the user's username
 username = os.getlogin()
-# TO_DO: add filename via user input
+# TODO: add filename or file path via user input?
 file_path = 'C:\\Users\\'+username+'\\Documents\\@Python\\sta.txt'
 
-# TO_DO: add more error conditions
+# TODO: add more critical error conditions
 critical_errors_list = ["Other Fault", "Fan failure", "MM1  Failed", "MM2  Failed",
                         "Unrecoverable fault on PoE controller", "PD Other Fault"]
 
+# Variables and a list used to get and store warning messages
+# the "second_warning" variable is used to get the second part of two-line error messages
 warning = ""
 second_warning = ""
 warning_list = []
-# test_list for warning_list testing
-test_list = []
+# Variable used to hold the product number of the device, used in "USEFUL LINKS" and "USEFUL INFORMATION" sections
 product_number = ""
-
 errors_counter = 0
+# Variable storing the previously read line of the logfile
 previous_line = ""
-# previous_line = str --- TypeError: "argument of type 'type' is not iterable ??
-# print(type(previous_line))
-
 log_time = str
 software_rev = str
 up_time = str
@@ -37,47 +34,67 @@ print()
 
 
 with open(file_path) as file_object:
+    # Looping through the file and reading each line
     for line in file_object:
-        # Breaking out of the file so we don't check the whole file unnecessarily
+        # Breaking out of the loop after the useful section of the logs is checked,
+        # in this way we don't check the whole file unnecessarily,
+        # ~1300 lines of logs are read instead of ~20000
         if 'Bottom of Log :' in line:
             break
+        # Another loop checking if an element from the error list is present in the currently read line
         for error_element in critical_errors_list:
             if error_element in line:
                 errors_counter += 1
                 print(line.rstrip())
         # warning_regex = re.search(r"[W]\s\d{2}[/]\d{2}[/]\d{2}", line)
 
-        # TO_DO: put this info at the top - append critical errors into a list or another for loop?
-        #        ask user if this info is to be included?
+        # Finding useful information about the device - not related to errors or warnings
+        # TODO: Possibly put this info at the top? Ask the user if this info is to be included?
         if 'Up Time' in line:
+            # If the desired string is found in the line we set the variable's value to the line of the log
             up_time = line
+            # REGEX is used to extract only the meaningful information from the line of text
             up_time_regex = re.search(r"\d+\s\w+", up_time)
         if 'Software revision' in line:
             software_rev = line
             software_rev_regex = re.search(r"\w{2}[.]\w+[.]\w+[.]\w+", software_rev)
         if 'show time' in previous_line:
             log_time = line
+        # Gets the product number of the device - also needed for the "USEFUL LINKS" section
         if 'Product:   HP J' in line:
             product_number = line
             product_number_regex = re.search(r"[J]\w\d{3}\w", product_number)
-        # TO_DO: add these two IFs into a single if - using or makes every line to get appended in the list
-        # TO_DO: add major errors: M 03/07/18 08:48:32 02796 chassis: AM1: Internal power supply 1 inserted. Total
+
+        # Example warning/major messages:
+        # W 10/25/13 17:42:51 00374 chassis: WARNING: SSC is out of Date: Load 8.2 or
+        #           newer
+        # M 03/07/18 08:48:32 02796 chassis: AM1: Internal power supply 1 inserted.
+        # All messages start with a letter indicating severity and then the date/time of the error
+        # Warnings start with 'W', major errors with 'M'. Some messages are on one line, others are on two lines.
+        #
+        # TODO: Remove repeated code
+        # if 'W 0' or 'W 1' or 'M 0' or 'M 1' in previous_line:
+        # or use REGEX "[WM]\s\d" - matches W/M 0/1
         if 'W 0' in previous_line:
-            # Deal with 1- or 2-line warnings with doing the check in "previous_line"
-            # use regex to check if "line" starts with whitespace - print it as well.
             warning = previous_line
             warning_list.append(warning)
+            # If the warning consists of two lines the second line starts with whitespace, so we match and append it
             if re.search(r"[\s]", line):
                 second_warning = line
                 warning_list.append(second_warning)
             warning_list.append(warning)
         if 'W 1' in line:
-            warning = line
+            warning = previous_line
             warning_list.append(warning)
+            if re.search(r"[\s]", line):
+                second_warning = line
+                warning_list.append(second_warning)
 
-        # previous_line used for output on the next line (show time)
+        # At the end of the loop we use the previous_line variable to store the line of text before the next line of log
+        # is checked.
         previous_line = line
 
+# Print the message if critical errors are found in the logfile.
 if errors_counter == 0:
     print('No critical errors were found in the logfile.')
 else:
@@ -86,31 +103,33 @@ else:
     print()
 
 print()
+# Print useful device information
 print("#################################")
 print(f"USEFUL SWITCH INFORMATION: ")
 print("#################################")
 print()
 print(f"Log generated on: {log_time.rstrip()}")
 print(f"Software revision: {software_rev_regex.group()}")
-print(f"Uptime: {up_time_regex.group()}")
+print(f"Up time: {up_time_regex.group()}")
 print(f"Product number: {product_number_regex.group()}")
 print()
 print()
 
-
+# Print useful links
 print("#################################")
 print(f"USEFUL LINKS: ")
 print("#################################")
+print("Order a replacement part:")
 print(f"http://partsurfer.hpe.com/Search.aspx?SearchText={product_number_regex.group()}")
+print("Download the latest software:")
 print(f"https://h10145.www1.hpe.com/downloads/SoftwareReleases.aspx?ProductNumber={product_number_regex.group()}")
 print()
 print()
+# Print the list of warnings
 print("#################################")
 print(f"Warnings found:")
 print("#################################")
-# TO_DO: remove empty line between each warning, fix issue with warnings on two lines
 print(*warning_list)
 
+# Printing time taken to analyze the log (for testing purposes)
 print("--- %s seconds ---" % (time.time() - start_time))
-#print(warning_list[:])
-#print(test_list[:])
