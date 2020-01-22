@@ -9,9 +9,9 @@ username = os.getlogin()
 # TODO: add filename or file path via user input?
 file_path = 'C:\\Users\\'+username+'\\Documents\\@Python\\sta.txt'
 
-# TODO: add more critical error conditions
-critical_errors_list = ["Other Fault", "Fan failure", "MM1  Failed", "MM2  Failed",
-                        "Unrecoverable fault on PoE controller", "PD Other Fault"]
+# A list with critical error messages to be searched in the logs
+critical_errors_list = ["Other Fault", "Fan failure", "MM1  Failed", "MM2  Failed", "Faulted", "PD Other Fault"
+                        "Unrecoverable fault on PoE controller", "Failures", "selftest failure"]
 
 # Variables and a list used to get and store warning messages
 # the "second_warning" variable is used to get the second part of two-line error messages
@@ -33,6 +33,7 @@ print("#################################")
 print()
 
 
+# TODO Use another loop and .rstrip() to remove all blank lines from the file
 with open(file_path) as file_object:
     # Looping through the file and reading each line
     for line in file_object:
@@ -71,19 +72,10 @@ with open(file_path) as file_object:
         # M 03/07/18 08:48:32 02796 chassis: AM1: Internal power supply 1 inserted.
         # All messages start with a letter indicating severity and then the date/time of the error
         # Warnings start with 'W', major errors with 'M'. Some messages are on one line, others are on two lines.
-        #
-        # TODO: Remove repeated code
-        # if 'W 0' or 'W 1' or 'M 0' or 'M 1' in previous_line:
-        # or use REGEX "[WM]\s\d" - matches W/M 0/1
-        if 'W 0' in previous_line:
-            warning = previous_line
-            warning_list.append(warning)
-            # If the warning consists of two lines the second line starts with whitespace, so we match and append it
-            if re.search(r"[\s]", line):
-                second_warning = line
-                warning_list.append(second_warning)
-            warning_list.append(warning)
-        if 'W 1' in line:
+        # If the message is on two lines, the second line always starts with whitespace
+        # These messages are caught with "[W]\s\d"
+        # The second if looks if the next message starts with whitespace
+        if re.search(r"[W]\s\d", previous_line):
             warning = previous_line
             warning_list.append(warning)
             if re.search(r"[\s]", line):
