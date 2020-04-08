@@ -3,3 +3,4 @@ This is a repository for a CLI based switch log analyzer application that takes 
 
 # Future plans:
 To add a GUI(TkInter) with a browse button allowing the user to select a specific logfile to be analyzed.
+To redo everything and make it OOP
