@@ -16,6 +16,3 @@ class WarningsFinder:
             return self.string
         else:
             return None
-
-
-print(WarningsFinder("W 0").find_warnings())

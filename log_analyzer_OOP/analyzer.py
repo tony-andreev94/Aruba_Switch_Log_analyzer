@@ -68,15 +68,19 @@ class Analyzer:
             if find_sysinfo.SysInfoFinder(line).find_serial() is not None:
                 sn = find_sysinfo.SysInfoFinder(line).find_serial()
                 self.sysinfo["Serial number: "] = sn
-        return f"Criticals found:\n" \
-            f"{self.found_criticals}\n" \
-            f"Warnings found:\n" \
-            f"{self.found_warnings}\n" \
-            f"Sysinfo:\n" \
-            f"{self.sysinfo}"
+        # return f"Criticals found:\n" \
+        #        f"{self.found_criticals}\n" \
+        #        f"Warnings found:\n" \
+        #        f"{self.found_warnings}\n" \
+        #        f"Sysinfo:\n" \
+        #        f"{self.sysinfo}"
         # return self.found_criticals, self.found_warnings, self.sysinfo
 
 
 # Testing purpose
 if __name__ == '__main__':
-    print(Analyzer().analyze())
+    test_obj1 = Analyzer()
+    test_obj1.analyze()
+    print(test_obj1.found_criticals)
+    print(test_obj1.found_warnings)
+    print(test_obj1.sysinfo)

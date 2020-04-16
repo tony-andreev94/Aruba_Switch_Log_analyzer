@@ -7,9 +7,12 @@ class FileLoader:
     In this class the logfile is loaded, each line is read and appended to a list and passed to the 'FileHandler' class.
     :returns self.logs
     """
+
     def __init__(self):
-        self.username = os.getlogin()
-        self.path = 'C:\\Users\\' + self.username + '\\Documents\\@Python\\sta.txt'  # TODO alternative path/input
+        # windows path:
+        # self.username = os.getlogin()
+        # self.path = 'C:\\Users\\' + self.username + '\\Documents\\@Python\\sta.txt'  # TODO alternative path/input
+        self.path = '/media/tony/DATA/Documents/@Python/sta.txt'
         self.logs = []
 
     def load_file(self):
@@ -22,5 +25,6 @@ class FileLoader:
 
 # Testing purpose
 if __name__ == '__main__':
-    result = FileLoader()
-    print(result.load_file())
+    test_obj = FileLoader()
+    print(test_obj.load_file())
+    # print(result.__doc__)

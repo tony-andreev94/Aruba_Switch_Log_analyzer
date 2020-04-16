@@ -12,7 +12,7 @@ class SysInfoFinder:
         if "show time" in self.string:
             return True
 
-    def find_uptime(self):
+    def find_uptime(self):  # TODO change findall method with finditer
         if len(re.findall(self.reg_exp.uptime_regex, self.string)) > 0:
             return "".join(re.findall(self.reg_exp.uptime_regex, self.string))
 

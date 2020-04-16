@@ -12,6 +12,10 @@ class CriticalsFinder:
     def find_criticals(self):
         for each in self.critical_errors_list:
             if each in self.string:
-                return each
-            else:
-                return None
+                return self.string
+
+# Testing
+# test_obj = CriticalsFinder('Unrecoverable fault on PoE controller')
+# test_obj2 = CriticalsFinder('PD Other Fault')
+# print(test_obj.find_criticals())
+# print(test_obj2.find_criticals())

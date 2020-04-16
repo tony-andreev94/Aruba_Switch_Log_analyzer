@@ -28,5 +28,5 @@ class FileHandler:
 
 # Testing purpose
 if __name__ == '__main__':
-    to_format = FileHandler()
-    print(to_format.format_logs())
+    test_obj = FileHandler()
+    print(test_obj.format_logs())
