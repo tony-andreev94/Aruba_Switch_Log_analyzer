@@ -19,5 +19,7 @@ The application takes a diagnostics file as an input, loops through each line of
   - Check if the input file is a text file - if the extension is ".log" or ".txt" (in FileLoader class)
   
   - Check if the text file is indeed a logfile - if the "show tech all" command is present. (in Analyzer class)
-
+  
+  - Change findall methods with finditer/match in 'SysInfoFinder'.
+  
 - Add time taken for execution.

@@ -15,7 +15,7 @@ class SysInfoFinder:
             return True
 
     @staticmethod
-    def find_uptime(string):  # TODO change findall method with finditer
+    def find_uptime(string):
         if len(re.findall(regex.Regex.uptime, string)) > 0:
             return "".join(re.findall(regex.Regex.uptime, string))
 
