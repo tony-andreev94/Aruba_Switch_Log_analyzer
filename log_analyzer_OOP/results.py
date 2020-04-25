@@ -1,13 +1,15 @@
 from log_analyzer_OOP import analyzer
+from log_analyzer_OOP import find_criticals
 
 
 class Results:
 
     def __init__(self):
-        # analyzer.Analyzer.analyze()
-        self.criticals_list = analyzer.Analyzer.found_criticals
-        self.warnings_list = analyzer.Analyzer.found_warnings
-        self.sysinfo_dict = analyzer.Analyzer.sysinfo
+        analyzed_info = analyzer.Analyzer()
+        analyzed_info.analyze()
+        self.criticals_list = analyzed_info.found_criticals
+        self.warnings_list = analyzed_info.found_warnings
+        self.sysinfo_dict = analyzed_info.sysinfo
         self.log_time = list(self.sysinfo_dict.values())[0]
         self.uptime = list(self.sysinfo_dict.values())[1]
         self.sw_rev = list(self.sysinfo_dict.values())[2]
@@ -16,7 +18,8 @@ class Results:
 
     def return_criticals(self):  # TODO move to formatter??
         name_string = "Critical errors found in logfile:"
-        return name_string, self.criticals_list
+        # return name_string, self.criticals_list
+        return self.criticals_list
 
     def return_warnings(self):
         name_string = "Warnings found in logfile:"
@@ -48,13 +51,21 @@ class Results:
 
 # Testing
 if __name__ == '__main__':
-    # test_obj1 = Results()
+    test_obj1 = Results()
     # test_obj2 = analyzer.Analyzer()
     # test_obj2.analyze()
-    # print(test_obj1.criticals_list)
-    # print(test_obj1.warnings_list)
-    # print(test_obj1.sysinfo_dict)
+    print(test_obj1.criticals_list)
+    print(test_obj1.warnings_list)
+    print(test_obj1.sysinfo_dict)
     # print(list(test_obj1.sysinfo_dict.values())[3])
     # print(test_obj1.pn)
-    test_obj3 = Results()
-    print(test_obj3.return_criticals())
+
+    # test_obj3 = Results()
+    # print(test_obj3.return_criticals())
+    # print(test_obj3.return_switch_info())
+
+    #tests today
+    # test_obj4 = Results()
+    # print(test_obj4.return_criticals)
+    # print(Results.return_criticals)
+    # print(Results.return_warnings)

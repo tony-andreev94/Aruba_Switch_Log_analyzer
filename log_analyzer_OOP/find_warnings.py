@@ -8,11 +8,12 @@ class WarningsFinder:
     The warning messages are represented on the whole row, so the string is returned as a result.
     """
 
-    def __init__(self, string):
-        self.string = string
+    # def __init__(self, string):
+    #     self.string = string
 
-    def find_warnings(self):
-        if re.findall(regex.Regex.warn_regex, self.string):
-            return self.string
+    @staticmethod
+    def find_warnings(string):
+        if re.findall(regex.Regex.warn_regex, string):
+            return string
         else:
             return None

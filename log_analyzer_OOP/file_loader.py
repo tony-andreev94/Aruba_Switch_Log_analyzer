@@ -1,4 +1,5 @@
 import os
+from log_analyzer_OOP import file_handler
 
 
 class FileLoader:
@@ -10,16 +11,21 @@ class FileLoader:
 
     def __init__(self):
         # windows path:
-        # self.username = os.getlogin()
-        # self.path = 'C:\\Users\\' + self.username + '\\Documents\\@Python\\sta.txt'  # TODO alternative path/input
-        self.path = '/media/tony/DATA/Documents/@Python/sta.txt'
+        self.username = os.getlogin()
+        self.path = 'C:\\Users\\' + self.username + '\\Documents\\@Python\\sta.txt'  # TODO alternative path/input
+        # linux path:
+        # self.path = '/media/tony/DATA/Documents/@Python/sta.txt'
         self.logs = []
+        self.formatted_logs = []
 
     def load_file(self):
-        # load file and remove whitespace
         with open(self.path) as file_object:
+            # basic error handling:
+            # check file extention .log . txt
             for line in file_object:
                 self.logs.append(line)
+            # we have the loaded file
+
         return self.logs
 
 

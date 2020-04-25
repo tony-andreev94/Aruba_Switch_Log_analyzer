@@ -15,13 +15,14 @@ class FileHandler:
     def __init__(self):
         file_object = file_loader.FileLoader()  # TODO better name (file_object)
         self.logs_list = file_object.load_file()  # TODO not sure
+        # self.logs_list = file_loader.FileLoader.load_file() missing positional argument: self
         self.logs_formatted = []  # make private? there is a shadow in analyzer
 
     def format_logs(self):
         for line in self.logs_list:
             if 'Bottom of Log :' in line:
                 break
-            if re.match(r'^\s*$', line) is None:
+            if re.match(r'^\s*$', line) is None:  # removes empty lines #TODO make the regex a variable in regex.py
                 self.logs_formatted.append(line.strip())
         return self.logs_formatted
 

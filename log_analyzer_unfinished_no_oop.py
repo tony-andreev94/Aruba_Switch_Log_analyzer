@@ -7,8 +7,8 @@ start_time = time.time()
 # Setting up a variable that gets the user's username
 username = os.getlogin()
 # TODO: add filename or file path via user input?
-file_path = '/media/tony/DATA/Documents/@Python/sta.txt'
-#file_path = 'C:\\Users\\' + username + '\\Documents\\@Python\\sta.txt'
+# file_path = '/media/tony/DATA/Documents/@Python/sta.txt'
+file_path = 'C:\\Users\\' + username + '\\Documents\\@Python\\sta.txt'
 
 # A list with critical error messages to be searched in the logs
 critical_errors_list = ["Other Fault", "Fan failure", "MM1  Failed", "MM2  Failed", "Faulted", "PD Other Fault",
